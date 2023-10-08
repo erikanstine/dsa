@@ -3,18 +3,17 @@ package main.java.week_1;
 import java.util.ArrayList;
 
 public class Karatsuba {
-    /**
-     * @param args 2 integers to be multiplied
-     * @return the product
-     */
-    public static int multiply(String[] args) {
+    public static void main(String[] args) {
         if (args.length != 2) {
             throw new RuntimeException("2 arguments required.");
         }
         int result = karatsuba(Integer.parseInt(args[0]),
                 Integer.parseInt(args[1]));
         System.out.println("Result: " + result);
-        return result;
+    }
+
+    public static int multiply(int x, int y) {
+       return karatsuba(x, y);
     }
 
     private static int karatsuba(int x, int y) {

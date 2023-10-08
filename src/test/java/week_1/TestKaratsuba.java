@@ -6,13 +6,11 @@ import org.junit.jupiter.api.Test;
 public class TestKaratsuba {
     @Test
     public void testMultiplication1() {
-        String[] testCase = {"10", "20"};
-        assert Karatsuba.multiply(testCase) == 10 * 20;
+        assert Karatsuba.multiply(10, 20) == 10 * 20;
     }
 
     @Test
     public void testOriginalCase() {
-        String[] testCase = {"1234", "5678"};
-        assert Karatsuba.multiply(testCase) == 1234 * 5678;
+        assert Karatsuba.multiply(1234, 5678) == 1234 * 5678;
     }
 }
