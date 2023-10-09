@@ -1,9 +1,13 @@
 name: junit-test
+
 permissions:
   checks: write
+
 on:
-  pull_request:
   push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
   build:
