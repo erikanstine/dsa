@@ -1,8 +1,12 @@
 package main.java.week_1;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Arrays;
+import java.util.Random;
 
 public class MergeSort {
+    static Random rand = new Random();
     public static Integer[] mergeSort(Integer[] intArray) {
         // split in two, sort each half
         int arrayLength = intArray.length;
@@ -35,7 +39,7 @@ public class MergeSort {
             } else {
                 r = right[j];
             }
-            if (r < l) {
+            if (r <= l) {
                 result[i+j] = r;
                 j++;
             } else {
@@ -46,10 +50,24 @@ public class MergeSort {
         return result;
     }
 
-
+    private static Integer[] generateRandom(int x) {
+        Integer[] res = new Integer[x];
+        for (int i = 0; i < x; i++) {
+            res[i] = rand.nextInt(x);
+        }
+        return res;
+    }
 
     public static void main(String[] args) {
-        Integer[] x = {1, 4, 2, 7, 9, 3};
-        System.out.println(Arrays.toString(mergeSort(x)));
+        if (args.length != 1) {
+            throw new RuntimeException("Pass in one argument for size of array");
+        }
+        Integer[] x = generateRandom(Integer.parseInt(args[0]));
+        System.out.println("Starting mergeSort");
+        long start = System.currentTimeMillis();
+        mergeSort(x);
+        long end = System.currentTimeMillis();
+        System.out.println(
+                "Elapsed time for sort of size " + args[0] + ": " + (end-start));
     }
 }
