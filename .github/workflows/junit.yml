@@ -1,4 +1,6 @@
 name: junit-test
+permissions:
+  checks: write
 on:
   pull_request:
   push:
