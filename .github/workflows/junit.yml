@@ -1,4 +1,4 @@
-name: junit-test
+name: JUnit Tests
 
 permissions:
   checks: write
