@@ -21,4 +21,9 @@ public class TestMergeSort {
         Integer[] actual = MergeSort.mergeSort(testCase);
         assertArrayEquals(actual, expected);
     }
+
+    @Test
+    public void testBadTest() {
+        assert 1 == 2;
+    }
 }
