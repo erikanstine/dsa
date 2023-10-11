@@ -1,5 +1,6 @@
 package main.java.week_1;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 
 public class Karatsuba {
@@ -7,74 +8,74 @@ public class Karatsuba {
         if (args.length != 2) {
             throw new RuntimeException("2 arguments required.");
         }
-        int result = karatsuba(Integer.parseInt(args[0]),
-                Integer.parseInt(args[1]));
+    BigInteger result = karatsuba(new BigInteger(args[0]), new BigInteger(args[1]));
         System.out.println("Result: " + result);
     }
 
-    public static int multiply(int x, int y) {
+    public static BigInteger multiply(BigInteger x, BigInteger y) {
        return karatsuba(x, y);
     }
 
-    private static int karatsuba(int x, int y) {
-        if (x == 0 || y == 0) {
-            return 0;
+    private static BigInteger karatsuba(BigInteger x, BigInteger y) {
+        if (x.compareTo(BigInteger.ZERO) == 0 || y.compareTo(BigInteger.ZERO) == 0) {
+      return BigInteger.ZERO;
         }
-        int n = Integer.toString(x).length();
-        int o = Integer.toString(y).length();
-        int cleanX = x;
-        int cleanY = y;
+        int n = x.toString().length();
+        int o = y.toString().length();
+        BigInteger cleanX = x;
+        BigInteger cleanY = y;
         int totalZeros = 0;
         // base case
         if (n == 1 && o == 1) {
-            return x * y;
+            return x.multiply(y);
         }
         if (n != o) {
-            // add some zeros to even out length
+            // add zeros to even out length
             int diff = n - o;
             if (diff > 0) {
                 // add zeros to y
-                cleanY = (int) (Math.pow(10, diff) * y);
+                BigInteger additionalZeros = BigInteger.valueOf(10).pow(diff);
+                cleanY = y.multiply(additionalZeros);
             } else {
                 // add zeros to x
-                cleanX = (int) (Math.pow(10, Math.abs(diff)) * x);
-                n = Integer.toString(cleanX).length();
+                BigInteger additionalZeros = BigInteger.valueOf(10).pow(Math.abs(diff));
+                cleanX = x.multiply(additionalZeros);
+                n = cleanX.toString().length();
             }
             totalZeros += Math.abs(diff);
         }
         if (n % 2 != 0) {
-            // lengths are the same, add more zeros
-            cleanX = cleanX * 10;
-            cleanY = cleanY * 10;
-            n = Integer.toString(cleanX).length();
+            // lengths are the same, add another zero to make even number
+            cleanX = cleanX.multiply(BigInteger.valueOf(10));
+            cleanY = cleanY.multiply(BigInteger.valueOf(10));
+            n = cleanX.toString().length();
             totalZeros += 2;
         }
-        // split int, a b c d
-        ArrayList<Integer> ab = splitInteger(cleanX);
-        ArrayList<Integer> cd = splitInteger(cleanY);
+        // split into a b c d
+        ArrayList<BigInteger> ab = splitInteger(cleanX);
+        ArrayList<BigInteger> cd = splitInteger(cleanY);
 
-        int a = ab.get(0);
-        int b = ab.get(1);
-        int c = cd.get(0);
-        int d = cd.get(1);
-        int term1 = karatsuba(a, c);
-        int term2;
-        int term3 = karatsuba(b, d);
+        BigInteger a = ab.get(0);
+        BigInteger b = ab.get(1);
+        BigInteger c = cd.get(0);
+        BigInteger d = cd.get(1);
+        BigInteger term1 = karatsuba(a, c);
+        BigInteger term2;
+        BigInteger term3 = karatsuba(b, d);
         // Gauss trick
-        term2 = karatsuba((a+b), (c+d)) - term1 - term3;
-
-        int total = (int) (Math.pow(10, n) * term1 + Math.pow(10, n/2.0) * term2 + term3);
-        return (int) (total / Math.pow(10, totalZeros));
+        term2 = karatsuba(a.add(b), c.add(d)).subtract(term1).subtract(term3);
+        BigInteger total = term1.multiply(BigInteger.valueOf(10).pow(n)).add(term2.multiply(BigInteger.valueOf(10).pow(n/2))).add(term3);
+        return total.divide(BigInteger.valueOf(10).pow(totalZeros));
     }
 
-    private static ArrayList<Integer> splitInteger(int i) {
-        String s = Integer.toString(i);
+    private static ArrayList<BigInteger> splitInteger(BigInteger i) {
+        String s = i.toString();
         int n = s.length();
         String s1 = s.substring(0, n/2);
         String s2 = s.substring(n/2);
-        ArrayList<Integer> split = new ArrayList<>();
-        split.add(Integer.parseInt(s1));
-        split.add(Integer.parseInt(s2));
+        ArrayList<BigInteger> split = new ArrayList<>();
+        split.add(new BigInteger(s1));
+        split.add(new BigInteger(s2));
         return split;
     }
 }
