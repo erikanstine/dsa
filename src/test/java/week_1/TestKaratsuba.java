@@ -1,8 +1,8 @@
-package test.java.week_1;
+package week_1;
+
+import org.junit.jupiter.api.Test;
 
 import java.math.BigInteger;
-import main.java.week_1.Karatsuba;
-import org.junit.jupiter.api.Test;
 
 public class TestKaratsuba {
     @Test

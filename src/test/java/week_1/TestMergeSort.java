@@ -1,6 +1,5 @@
-package test.java.week_1;
+package week_1;
 
-import main.java.week_1.MergeSort;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;

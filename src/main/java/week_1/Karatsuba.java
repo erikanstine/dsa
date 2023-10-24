@@ -1,4 +1,4 @@
-package main.java.week_1;
+package week_1;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
