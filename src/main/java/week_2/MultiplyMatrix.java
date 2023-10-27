@@ -29,7 +29,6 @@ public class MultiplyMatrix {
       return result;
     }
     // Split into 4 matrices each
-    int half = size/2;
     int[][] a = getSubmatrixA(x);
     int[][] b = getSubmatrixB(x);
     int[][] c = getSubmatrixC(x);
@@ -44,21 +43,62 @@ public class MultiplyMatrix {
     int[][] cedg = addMatrix(multiplyMatrixRecursive(c, e), multiplyMatrixRecursive(d, g));
     int[][] cfdh = addMatrix(multiplyMatrixRecursive(c, f), multiplyMatrixRecursive(d, h));
 
-    for(int i = 0; i < half; i++) {
-      int[] tempA = new int[size];
-      int[] tempB = new int[size];
-      System.arraycopy(aebg[i], 0, tempA, 0, half);
-      System.arraycopy(afbh[i], 0, tempA, half, half);
-      result[i] = tempA;
-      System.arraycopy(cedg[i], 0, tempB, 0, half);
-      System.arraycopy(cfdh[i], 0, tempB, half, half);
-      result[half+i] = tempB;
-    }
+    result = combineSubmatrices(aebg, afbh, cedg, cfdh);
 
     return result;
   }
+
   public static int[][] multiplyMatrixStrassen(int[][] x, int[][] y) {
-    return x;
+    int size = x.length;
+    int[][] result = new int[size][size];
+    if (size == 1) {
+      result[0][0] = x[0][0] * y[0][0];
+      return result;
+    }
+
+    int[][] a = getSubmatrixA(x);
+    int[][] b = getSubmatrixB(x);
+    int[][] c = getSubmatrixC(x);
+    int[][] d = getSubmatrixD(x);
+    int[][] e = getSubmatrixA(y);
+    int[][] f = getSubmatrixB(y);
+    int[][] g = getSubmatrixC(y);
+    int[][] h = getSubmatrixD(y);
+
+    int[][] p1 = multiplyMatrixStrassen(a, subtractMatrix(f, h));
+    int[][] p2 = multiplyMatrixStrassen(addMatrix(a, b), h);
+    int[][] p3 = multiplyMatrixStrassen(addMatrix(c, d), e);
+    int[][] p4 = multiplyMatrixStrassen(d, subtractMatrix(g, e));
+    int[][] p5 = multiplyMatrixStrassen(addMatrix(a, d), addMatrix(e, h));
+    int[][] p6 = multiplyMatrixStrassen(subtractMatrix(b, d), addMatrix(g, h));
+    int[][] p7 = multiplyMatrixStrassen(subtractMatrix(a, c), addMatrix(e, f));
+
+    int[][] topLeft = addMatrix(p6, subtractMatrix(addMatrix(p5, p4), p2));
+    int[][] topRight = addMatrix(p1, p2);
+    int[][] bottomLeft = addMatrix(p3, p4);
+    int[][] bottomRight = subtractMatrix(subtractMatrix(addMatrix(p1, p5), p3), p7);
+
+    result = combineSubmatrices(topLeft, topRight, bottomLeft, bottomRight);
+
+    return result;
+  }
+
+  private static int[][] combineSubmatrices(int[][] topLeft, int[][] topRight,
+      int[][] bottomLeft, int[][] bottomRight) {
+    int half = topLeft.length;
+    int size = half * 2;
+    int[][] result = new int[size][size];
+    for(int i = 0; i < half; i++) {
+      int[] tempA = new int[size];
+      int[] tempB = new int[size];
+      System.arraycopy(topLeft[i], 0, tempA, 0, half);
+      System.arraycopy(topRight[i], 0, tempA, half, half);
+      result[i] = tempA;
+      System.arraycopy(bottomLeft[i], 0, tempB, 0, half);
+      System.arraycopy(bottomRight[i], 0, tempB, half, half);
+      result[half +i] = tempB;
+    }
+    return result;
   }
 
   public static int[][] addMatrix(int[][] a, int[][] b) {
@@ -67,6 +107,17 @@ public class MultiplyMatrix {
     for(int i = 0; i < size; i++) {
       for(int j = 0; j < size; j++) {
         result[i][j] = a[i][j] + b[i][j];
+      }
+    }
+    return result;
+  }
+
+  public static int[][] subtractMatrix(int[][] a, int[][] b) {
+    int size = a.length;
+    int[][] result = new int[size][size];
+    for(int i = 0; i < size; i++) {
+      for(int j = 0; j < size; j++) {
+        result[i][j] = a[i][j] - b[i][j];
       }
     }
     return result;
