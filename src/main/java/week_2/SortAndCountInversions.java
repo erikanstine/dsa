@@ -11,7 +11,7 @@ public class SortAndCountInversions {
         }
 
         Integer[] left = Arrays.copyOfRange(intArray, 0, arrayLength/2);
-        Integer[] right = Arrays.copyOfRange(intArray, arrayLength/2, arrayLength);;
+        Integer[] right = Arrays.copyOfRange(intArray, arrayLength/2, arrayLength);
         SortCountResult leftResult = sortAndCountInversions(left);
         SortCountResult rightResult = sortAndCountInversions(right);
         SortCountResult splitResult = mergeAndCountSplitInversions(leftResult.getArray(), rightResult.getArray());
