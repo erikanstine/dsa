@@ -40,7 +40,7 @@ public class QuickSort {
         numComparisons += i;
     }
 
-    private void swap(Integer[] intArray, int j, int i) {
+    public void swap(Integer[] intArray, int j, int i) {
         int temp = intArray[j];
         intArray[j] = intArray[i];
         intArray[i] = temp;
