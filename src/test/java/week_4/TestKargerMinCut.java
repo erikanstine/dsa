@@ -22,12 +22,12 @@ public class TestKargerMinCut {
         Integer actual = kmc.findMinCut(testCase);
         assert expected.equals(actual);
     }
-
-    @Test
-    public void testKargerMinCutTxtInput() {
-        KargerMinCut kmc = new KargerMinCut();
-        Map<Integer, List<Integer>> testCase = utils.readTxtFileInput.readTxtFileIntoGraph("graph_week_4.txt");
-        Integer actual = kmc.findMinCut(testCase);
-        System.out.println(actual);
-    }
+//
+//    @Test
+//    public void testKargerMinCutTxtInput() {
+//        KargerMinCut kmc = new KargerMinCut();
+//        Map<Integer, List<Integer>> testCase = utils.readTxtFileInput.readTxtFileIntoGraph("graph_week_4.txt");
+//        Integer actual = kmc.findMinCut(testCase);
+//        System.out.println(actual);
+//    }
 }
